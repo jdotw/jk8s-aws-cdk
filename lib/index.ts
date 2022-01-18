@@ -6,6 +6,7 @@ import { OpenSearchStack } from "./opensearch-stack";
 import { RDSStack } from "./rds-stack";
 import { SecretsStack } from "./secrets-stack";
 import { VPCStack } from "./vpc-stack";
+import * as cdk from "aws-cdk-lib";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export interface JK8SAwsCdkProps {
@@ -42,5 +43,12 @@ export class JK8SAwsCdk extends Construct {
     });
 
     const registry = new ECRStack(this, "ECRStack", {});
+
+    new cdk.CfnOutput(this, "ArgoCDSecretsPolicyARN", {
+      //      value: argocdSecretsPolicy.managedPolicyArn,
+      value: "testARN",
+      description: "Policy for ArgoCD Secrets Retrieval",
+      exportName: "ArgoCDSecretsPolicyARN",
+    });
   }
 }
