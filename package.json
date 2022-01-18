@@ -4,8 +4,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/*.d.ts",
-    "lib/*.js"
+    "build/lib/*.d.ts",
+    "build/lib/*.js"
   ],
   "scripts": {
     "build": "tsc",
