@@ -1,5 +1,9 @@
 {
-  "name": "jk8s-aws-cdk",
+  "name": "@jdotw/jk8s-aws-cdk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/octocat/my-other-repo.git"
+  },
   "version": "0.1.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
