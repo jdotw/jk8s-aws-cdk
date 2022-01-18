@@ -45,7 +45,7 @@ export class JK8SAwsCdkStack extends Stack {
 
     const registry = new ECRStack(scope, "ECRStack", {});
 
-    new cdk.CfnOutput(scope, "ArgoCDSecretsPolicyARN", {
+    new cdk.CfnOutput(this, "ArgoCDSecretsPolicyARN", {
       //      value: argocdSecretsPolicy.managedPolicyArn,
       value: "testARN",
       description: "Policy for ArgoCD Secrets Retrieval",
