@@ -22,28 +22,28 @@ export class JK8SAwsCdkStack extends Stack {
 
     const { name, fqdn } = props;
 
-    const vpc = new VPCStack(scope, "VPCStack", {});
+    const vpc = new VPCStack(this, "VPCStack", {});
 
-    const secrets = new SecretsStack(scope, "SecretsStack", {});
+    const secrets = new SecretsStack(this, "SecretsStack", {});
 
-    const dns = new DNSStack(scope, "DNSStack", {
+    const dns = new DNSStack(this, "DNSStack", {
       fqdn,
     });
 
-    const rds = new RDSStack(scope, "RDSStack", {
+    const rds = new RDSStack(this, "RDSStack", {
       vpc,
     });
 
-    const opensearch = new OpenSearchStack(scope, "OpenSearchStack", { vpc });
+    const opensearch = new OpenSearchStack(this, "OpenSearchStack", { vpc });
 
-    const cluster = new EKSStack(scope, "EKSStack", {
+    const cluster = new EKSStack(this, "EKSStack", {
       name,
       vpc,
       rds,
       opensearch,
     });
 
-    const registry = new ECRStack(scope, "ECRStack", {});
+    const registry = new ECRStack(this, "ECRStack", {});
 
     new cdk.CfnOutput(this, "ArgoCDSecretsPolicyARN", {
       //      value: argocdSecretsPolicy.managedPolicyArn,
