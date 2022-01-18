@@ -95,6 +95,12 @@ export class JK8SAwsCdkStack extends Stack {
       exportName: "ClusterName",
     });
 
+    new cdk.CfnOutput(this, "ClusterStackName", {
+      value: cluster.stackName,
+      description: "Cluster Stack Name",
+      exportName: "ClusterStackName",
+    });
+
     new cdk.CfnOutput(this, "OpenSearchDomain", {
       value: opensearch.domain.domainEndpoint,
       description: "OpenSearch Domain",
