@@ -18,7 +18,7 @@ export class OpenSearchStack extends Stack {
 
     const { vpc } = props!;
 
-    const domain = new opensearch.Domain(this, "Domain", {
+    this.domain = new opensearch.Domain(this, "Domain", {
       version: opensearch.EngineVersion.OPENSEARCH_1_0,
       capacity: {
         masterNodes: 3,
@@ -47,26 +47,7 @@ export class OpenSearchStack extends Stack {
         enabled: true,
       },
     });
-    this.opensearch = domain;
-
-    new cdk.CfnOutput(this, "OpenSearchDomain", {
-      value: domain.domainEndpoint,
-      description: "OpenSearch Domain",
-      exportName: "OpenSearchDomain",
-    });
-
-    new cdk.CfnOutput(this, "MasterUserSecretName", {
-      value: domain.masterUserPassword?.toString()!,
-      description: "OpenSearch Master User Secret Name",
-      exportName: "MasterUserSecretName",
-    });
-
-    new cdk.CfnOutput(this, "MasterUserGeneratedPassword", {
-      value: domain.masterUserPassword?.toString()!,
-      description: "OpenSearch Master User Generated Password",
-      exportName: "MasterUserGeneratedPassword",
-    });
   }
 
-  readonly opensearch: opensearch.Domain;
+  readonly domain: opensearch.Domain;
 }

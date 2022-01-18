@@ -21,7 +21,7 @@ export class DNSStack extends Stack {
     // Policy: In-cluster manipulation of zone
     // This policy can be used by both external-dns and
     // cert-manager for DNS record inspection and manipulation
-    const clusterDNSPolicy = new iam.ManagedPolicy(this, "ClusterDNSPolicy", {
+    this.clusterDNSPolicy = new iam.ManagedPolicy(this, "ClusterDNSPolicy", {
       managedPolicyName: "ClusterDNSPolicy",
       statements: [
         new iam.PolicyStatement({
@@ -44,21 +44,7 @@ export class DNSStack extends Stack {
         }),
       ],
     });
-    new cdk.CfnOutput(this, "ClusterDNSPolicyARN", {
-      value: clusterDNSPolicy.managedPolicyArn,
-      description: "Policy for in-cluster manipulation of Route53",
-      exportName: "ClusterDNSPolicyARN",
-    });
-    new cdk.CfnOutput(this, "FQDN", {
-      value: this.zone.zoneName,
-      description: "FQDN",
-      exportName: "FQDN",
-    });
-    new cdk.CfnOutput(this, "ZoneID", {
-      value: this.zone.hostedZoneId,
-      description: "ZoneID",
-      exportName: "ZoneID",
-    });
   }
   readonly zone: route53.PublicHostedZone;
+  readonly clusterDNSPolicy: iam.ManagedPolicy;
 }

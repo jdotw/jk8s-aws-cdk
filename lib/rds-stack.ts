@@ -43,15 +43,6 @@ export class RDSStack extends Stack {
       deletionProtection: false,
       publiclyAccessible: false,
     });
-
-    new cdk.CfnOutput(this, "Host", {
-      value: this.db.instanceEndpoint.hostname,
-    });
-
-    new cdk.CfnOutput(this, "SecretName", {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-      value: this.db.secret?.secretName!,
-    });
   }
 
   readonly db: DatabaseInstance;

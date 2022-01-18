@@ -45,11 +45,70 @@ export class JK8SAwsCdkStack extends Stack {
 
     const registry = new ECRStack(this, "ECRStack", {});
 
+    new cdk.CfnOutput(this, "ClusterDNSPolicyARN", {
+      value: dns.clusterDNSPolicy.managedPolicyArn,
+      description: "Policy for in-cluster manipulation of Route53",
+      exportName: "ClusterDNSPolicyARN",
+    });
+    new cdk.CfnOutput(this, "FQDN", {
+      value: dns.zone.zoneName,
+      description: "FQDN",
+      exportName: "FQDN",
+    });
+    new cdk.CfnOutput(this, "ZoneID", {
+      value: dns.zone.hostedZoneId,
+      description: "ZoneID",
+      exportName: "ZoneID",
+    });
+
     new cdk.CfnOutput(this, "ArgoCDSecretsPolicyARN", {
-      //      value: argocdSecretsPolicy.managedPolicyArn,
-      value: "testARN",
+      value: secrets.argocdSecretsPolicy.managedPolicyArn,
       description: "Policy for ArgoCD Secrets Retrieval",
       exportName: "ArgoCDSecretsPolicyARN",
+    });
+    new cdk.CfnOutput(this, "TelemetrySecretsPolicyARN", {
+      value: secrets.telemetrySecretsPolicy.managedPolicyArn,
+      description: "Policy for Telemetry Secrets Retrieval",
+      exportName: "TelemetrySecretsPolicyARN",
+    });
+    new cdk.CfnOutput(this, "AppSecretsPolicyARN", {
+      value: secrets.appSecretsPolicy.managedPolicyArn,
+      description: "Policy for App Secrets Retrieval",
+      exportName: "AppSecretsPolicyARN",
+    });
+
+    new cdk.CfnOutput(this, "RDSHost", {
+      value: rds.db.instanceEndpoint.hostname,
+    });
+    new cdk.CfnOutput(this, "RDSSecretName", {
+      value: rds.db.secret?.secretName!,
+    });
+
+    new cdk.CfnOutput(this, "ClusterARN", {
+      value: cluster.cluster.clusterArn,
+      description: "Cluster ARN",
+      exportName: "ClusterARN",
+    });
+    new cdk.CfnOutput(this, "ClusterName", {
+      value: cluster.cluster.clusterName,
+      description: "Cluster Name",
+      exportName: "ClusterName",
+    });
+
+    new cdk.CfnOutput(this, "OpenSearchDomain", {
+      value: opensearch.domain.domainEndpoint,
+      description: "OpenSearch Domain",
+      exportName: "OpenSearchDomain",
+    });
+    new cdk.CfnOutput(this, "MasterUserSecretName", {
+      value: opensearch.domain.masterUserPassword?.toString()!,
+      description: "OpenSearch Master User Secret Name",
+      exportName: "MasterUserSecretName",
+    });
+    new cdk.CfnOutput(this, "MasterUserGeneratedPassword", {
+      value: opensearch.domain.masterUserPassword?.toString()!,
+      description: "OpenSearch Master User Generated Password",
+      exportName: "MasterUserGeneratedPassword",
     });
   }
 }

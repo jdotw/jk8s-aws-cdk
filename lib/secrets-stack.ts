@@ -10,7 +10,7 @@ export class SecretsStack extends Stack {
     super(scope, id, props);
 
     // Policy: ArgoCD Secrets Retrieval Policy
-    const argocdSecretsPolicy = new iam.ManagedPolicy(
+    this.argocdSecretsPolicy = new iam.ManagedPolicy(
       this,
       "ArgoCDSecretsPolicy",
       {
@@ -29,14 +29,9 @@ export class SecretsStack extends Stack {
         ],
       }
     );
-    new cdk.CfnOutput(this, "ArgoCDSecretsPolicyARN", {
-      value: argocdSecretsPolicy.managedPolicyArn,
-      description: "Policy for ArgoCD Secrets Retrieval",
-      exportName: "ArgoCDSecretsPolicyARN",
-    });
 
     // Policy: Telemetry Secrets Retrieval Policy
-    const telemetrySecretsPolicy = new iam.ManagedPolicy(
+    this.telemetrySecretsPolicy = new iam.ManagedPolicy(
       this,
       "TelemetrySecretsPolicy",
       {
@@ -55,14 +50,9 @@ export class SecretsStack extends Stack {
         ],
       }
     );
-    new cdk.CfnOutput(this, "TelemetrySecretsPolicyARN", {
-      value: telemetrySecretsPolicy.managedPolicyArn,
-      description: "Policy for Telemetry Secrets Retrieval",
-      exportName: "TelemetrySecretsPolicyARN",
-    });
 
     // Policy: App Secrets Retrieval Policy
-    const appSecretsPolicy = new iam.ManagedPolicy(this, "AppSecretsPolicy", {
+    this.appSecretsPolicy = new iam.ManagedPolicy(this, "AppSecretsPolicy", {
       managedPolicyName: "AppSecretsPolicy",
       statements: [
         new iam.PolicyStatement({
@@ -77,10 +67,9 @@ export class SecretsStack extends Stack {
         }),
       ],
     });
-    new cdk.CfnOutput(this, "AppSecretsPolicyARN", {
-      value: appSecretsPolicy.managedPolicyArn,
-      description: "Policy for App Secrets Retrieval",
-      exportName: "AppSecretsPolicyARN",
-    });
   }
+
+  readonly argocdSecretsPolicy: iam.ManagedPolicy;
+  readonly telemetrySecretsPolicy: iam.ManagedPolicy;
+  readonly appSecretsPolicy: iam.ManagedPolicy;
 }

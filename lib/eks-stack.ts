@@ -10,7 +10,6 @@ import { ManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { DNSStack } from "./dns-stack";
 import { VPCStack } from "./vpc-stack";
 import { OpenSearchStack } from "./opensearch-stack";
-import { capitalizeFirst } from "./utils";
 
 export interface EKSStackProps extends StackProps {
   name: string;
@@ -30,7 +29,7 @@ export class EKSStack extends Stack {
       assumedBy: new iam.AccountRootPrincipal(),
     });
 
-    this.cluster = new eks.Cluster(this, `${capitalizeFirst(name)}`, {
+    this.cluster = new eks.Cluster(this, "Cluster", {
       vpc: vpc.vpc,
       vpcSubnets: [
         {
@@ -46,18 +45,6 @@ export class EKSStack extends Stack {
       defaultCapacity: 0,
     });
 
-    new cdk.CfnOutput(this, "ClusterARN", {
-      value: this.cluster.clusterArn,
-      description: "Cluster ARN",
-      exportName: "ClusterARN",
-    });
-
-    new cdk.CfnOutput(this, "ClusterName", {
-      value: this.cluster.clusterName,
-      description: "Cluster Name",
-      exportName: "ClusterName",
-    });
-
     const nodeGroup = this.cluster.addNodegroupCapacity(`DefaultNodeGroup`, {
       instanceTypes: [new ec2.InstanceType("t3.medium")],
       minSize: 1,
@@ -66,11 +53,7 @@ export class EKSStack extends Stack {
     });
 
     rds.db.connections.allowFrom(this.cluster, ec2.Port.tcp(5432));
-
-    opensearch.opensearch.connections.allowFrom(
-      this.cluster,
-      ec2.Port.tcp(443)
-    );
+    opensearch.domain.connections.allowFrom(this.cluster, ec2.Port.tcp(443));
   }
 
   readonly cluster: eks.Cluster;
