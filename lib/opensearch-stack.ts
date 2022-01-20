@@ -47,6 +47,22 @@ export class OpenSearchStack extends Stack {
         enabled: true,
       },
     });
+
+    new cdk.CfnOutput(this, "OpenSearchDomain", {
+      value: this.domain.domainEndpoint,
+      description: "OpenSearch Domain",
+      exportName: "OpenSearchDomain",
+    });
+    new cdk.CfnOutput(this, "MasterUserSecretName", {
+      value: this.domain.masterUserPassword?.toString()!,
+      description: "OpenSearch Master User Secret Name",
+      exportName: "MasterUserSecretName",
+    });
+    new cdk.CfnOutput(this, "MasterUserGeneratedPassword", {
+      value: this.domain.masterUserPassword?.toString()!,
+      description: "OpenSearch Master User Generated Password",
+      exportName: "MasterUserGeneratedPassword",
+    });
   }
 
   readonly domain: opensearch.Domain;

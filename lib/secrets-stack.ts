@@ -29,6 +29,11 @@ export class SecretsStack extends Stack {
         ],
       }
     );
+    new cdk.CfnOutput(this, "ArgoCDSecretsPolicyARN", {
+      value: this.argocdSecretsPolicy.managedPolicyArn,
+      description: "Policy for ArgoCD Secrets Retrieval",
+      exportName: "ArgoCDSecretsPolicyARN",
+    });
 
     // Policy: Telemetry Secrets Retrieval Policy
     this.telemetrySecretsPolicy = new iam.ManagedPolicy(
@@ -50,6 +55,11 @@ export class SecretsStack extends Stack {
         ],
       }
     );
+    new cdk.CfnOutput(this, "TelemetrySecretsPolicyARN", {
+      value: this.telemetrySecretsPolicy.managedPolicyArn,
+      description: "Policy for Telemetry Secrets Retrieval",
+      exportName: "TelemetrySecretsPolicyARN",
+    });
 
     // Policy: Jaeger Secrets Retrieval Policy
     this.jaegerSecretsPolicy = new iam.ManagedPolicy(
@@ -71,6 +81,11 @@ export class SecretsStack extends Stack {
         ],
       }
     );
+    new cdk.CfnOutput(this, "JaegerSecretsPolicyARN", {
+      value: this.jaegerSecretsPolicy.managedPolicyArn,
+      description: "Policy for Jaeger Secrets Retrieval",
+      exportName: "JaegerSecretsPolicyARN",
+    });
 
     // Policy: App Secrets Retrieval Policy
     this.appSecretsPolicy = new iam.ManagedPolicy(this, "AppSecretsPolicy", {
@@ -87,6 +102,11 @@ export class SecretsStack extends Stack {
           ],
         }),
       ],
+    });
+    new cdk.CfnOutput(this, "AppSecretsPolicyARN", {
+      value: this.appSecretsPolicy.managedPolicyArn,
+      description: "Policy for App Secrets Retrieval",
+      exportName: "AppSecretsPolicyARN",
     });
   }
 

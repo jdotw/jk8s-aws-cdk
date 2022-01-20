@@ -43,6 +43,13 @@ export class RDSStack extends Stack {
       deletionProtection: false,
       publiclyAccessible: false,
     });
+
+    new cdk.CfnOutput(this, "RDSHost", {
+      value: this.db.instanceEndpoint.hostname,
+    });
+    new cdk.CfnOutput(this, "RDSSecretName", {
+      value: this.db.secret?.secretName!,
+    });
   }
 
   readonly db: DatabaseInstance;

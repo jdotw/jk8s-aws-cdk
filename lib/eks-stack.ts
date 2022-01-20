@@ -54,6 +54,23 @@ export class EKSStack extends Stack {
 
     rds.db.connections.allowFrom(this.cluster, ec2.Port.tcp(5432));
     opensearch.domain.connections.allowFrom(this.cluster, ec2.Port.tcp(443));
+
+    new cdk.CfnOutput(this, "ClusterARN", {
+      value: this.cluster.clusterArn,
+      description: "Cluster ARN",
+      exportName: "ClusterARN",
+    });
+    new cdk.CfnOutput(this, "ClusterName", {
+      value: this.cluster.clusterName,
+      description: "Cluster Name",
+      exportName: "ClusterName",
+    });
+
+    new cdk.CfnOutput(this, "ClusterStackName", {
+      value: this.stackName,
+      description: "Cluster Stack Name",
+      exportName: "ClusterStackName",
+    });
   }
 
   readonly cluster: eks.Cluster;

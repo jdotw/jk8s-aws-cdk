@@ -18,6 +18,17 @@ export class DNSStack extends Stack {
       zoneName: fqdn,
     });
 
+    new cdk.CfnOutput(this, "FQDN", {
+      value: this.zone.zoneName,
+      description: "FQDN",
+      exportName: "FQDN",
+    });
+    new cdk.CfnOutput(this, "ZoneID", {
+      value: this.zone.hostedZoneId,
+      description: "ZoneID",
+      exportName: "ZoneID",
+    });
+
     // Policy: In-cluster manipulation of zone
     // This policy can be used by both external-dns and
     // cert-manager for DNS record inspection and manipulation
@@ -44,7 +55,14 @@ export class DNSStack extends Stack {
         }),
       ],
     });
+
+    new cdk.CfnOutput(this, "ClusterDNSPolicyARN", {
+      value: this.clusterDNSPolicy.managedPolicyArn,
+      description: "Policy for in-cluster manipulation of Route53",
+      exportName: "ClusterDNSPolicyARN",
+    });
   }
+
   readonly zone: route53.PublicHostedZone;
   readonly clusterDNSPolicy: iam.ManagedPolicy;
 }
