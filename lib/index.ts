@@ -67,7 +67,7 @@ export class JK8SAwsCdkStack extends Stack {
       exportName: "ArgoCDSecretsPolicyARN",
     });
     new cdk.CfnOutput(this, "TelemetrySecretsPolicyARN", {
-      value: secrets.jaegerSecretsPolicy.managedPolicyArn,
+      value: secrets.telemetrySecretsPolicy.managedPolicyArn,
       description: "Policy for Telemetry Secrets Retrieval",
       exportName: "TelemetrySecretsPolicyARN",
     });
