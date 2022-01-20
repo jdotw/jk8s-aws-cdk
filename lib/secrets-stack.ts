@@ -30,6 +30,27 @@ export class SecretsStack extends Stack {
       }
     );
 
+    // Policy: Telemetry Secrets Retrieval Policy
+    this.telemetrySecretsPolicy = new iam.ManagedPolicy(
+      this,
+      "TelemetrySecretsPolicy",
+      {
+        managedPolicyName: "TelemetrySecretsPolicy",
+        statements: [
+          new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: ["*"],
+            actions: [
+              "secretsmanager:GetResourcePolicy",
+              "secretsmanager:GetSecretValue",
+              "secretsmanager:DescribeSecret",
+              "secretsmanager:ListSecretVersionIds",
+            ],
+          }),
+        ],
+      }
+    );
+
     // Policy: Jaeger Secrets Retrieval Policy
     this.jaegerSecretsPolicy = new iam.ManagedPolicy(
       this,
@@ -71,5 +92,6 @@ export class SecretsStack extends Stack {
 
   readonly argocdSecretsPolicy: iam.ManagedPolicy;
   readonly jaegerSecretsPolicy: iam.ManagedPolicy;
+  readonly telemetrySecretsPolicy: iam.ManagedPolicy;
   readonly appSecretsPolicy: iam.ManagedPolicy;
 }
