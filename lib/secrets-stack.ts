@@ -108,10 +108,37 @@ export class SecretsStack extends Stack {
       description: "Policy for App Secrets Retrieval",
       exportName: "AppSecretsPolicyARN",
     });
+
+    // Policy: Crossplane Secrets Retrieval Policy
+    this.crossplaneSecretsPolicy = new iam.ManagedPolicy(
+      this,
+      "CrossplaneSecretsPolicy",
+      {
+        managedPolicyName: "CrossplaneSecretsPolicy",
+        statements: [
+          new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: ["*"],
+            actions: [
+              "secretsmanager:GetResourcePolicy",
+              "secretsmanager:GetSecretValue",
+              "secretsmanager:DescribeSecret",
+              "secretsmanager:ListSecretVersionIds",
+            ],
+          }),
+        ],
+      }
+    );
+    new cdk.CfnOutput(this, "CrossplaneSecretsPolicyARN", {
+      value: this.crossplaneSecretsPolicy.managedPolicyArn,
+      description: "Policy for Crossplane Secrets Retrieval",
+      exportName: "CrossplaneSecretsPolicyARN",
+    });
   }
 
   readonly argocdSecretsPolicy: iam.ManagedPolicy;
   readonly jaegerSecretsPolicy: iam.ManagedPolicy;
   readonly telemetrySecretsPolicy: iam.ManagedPolicy;
   readonly appSecretsPolicy: iam.ManagedPolicy;
+  readonly crossplaneSecretsPolicy: iam.ManagedPolicy;
 }
