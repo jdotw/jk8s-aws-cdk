@@ -51,12 +51,12 @@ export class OpenSearchStack extends Stack {
     new cdk.CfnOutput(this, "OpenSearchDomainEndpoint", {
       value: this.domain.domainEndpoint,
       description: "OpenSearch Domain",
-      exportName: "OpenSearchDomain",
+      exportName: "OpenSearchDomainEndpoint",
     });
     new cdk.CfnOutput(this, "OpenSearchDomainName", {
       value: this.domain.domainName,
       description: "OpenSearch Domain",
-      exportName: "OpenSearchDomain",
+      exportName: "OpenSearchDomainName",
     });
     new cdk.CfnOutput(this, "MasterUserSecretName", {
       value: this.domain.masterUserPassword?.toString()!,
