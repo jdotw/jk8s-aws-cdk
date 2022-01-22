@@ -2,7 +2,6 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import * as cdk from "aws-cdk-lib";
 import * as rds from "aws-cdk-lib/aws-rds";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
 import { DatabaseInstance } from "aws-cdk-lib/aws-rds";
 import { VPCStack } from "./vpc-stack";
@@ -31,7 +30,9 @@ export class RDSStack extends Stack {
           ec2.InstanceClass.BURSTABLE3,
           ec2.InstanceSize.MICRO
         ),
-      credentials: rds.Credentials.fromGeneratedSecret("postgres"),
+      credentials: rds.Credentials.fromGeneratedSecret("postgres", {
+        excludeCharacters: " %+~`#$&*()|[]{}:;<>?!'/@^\\.,=",
+      }),
       multiAz: false,
       allocatedStorage: 20,
       maxAllocatedStorage: 105,
