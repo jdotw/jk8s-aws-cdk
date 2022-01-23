@@ -61,32 +61,6 @@ export class SecretsStack extends Stack {
       exportName: "TelemetrySecretsPolicyARN",
     });
 
-    // Policy: Jaeger Secrets Retrieval Policy
-    this.jaegerSecretsPolicy = new iam.ManagedPolicy(
-      this,
-      "JaegerSecretsPolicy",
-      {
-        managedPolicyName: "JaegerSecretsPolicy",
-        statements: [
-          new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: ["*"],
-            actions: [
-              "secretsmanager:GetResourcePolicy",
-              "secretsmanager:GetSecretValue",
-              "secretsmanager:DescribeSecret",
-              "secretsmanager:ListSecretVersionIds",
-            ],
-          }),
-        ],
-      }
-    );
-    new cdk.CfnOutput(this, "JaegerSecretsPolicyARN", {
-      value: this.jaegerSecretsPolicy.managedPolicyArn,
-      description: "Policy for Jaeger Secrets Retrieval",
-      exportName: "JaegerSecretsPolicyARN",
-    });
-
     // Policy: App Secrets Retrieval Policy
     this.appSecretsPolicy = new iam.ManagedPolicy(this, "AppSecretsPolicy", {
       managedPolicyName: "AppSecretsPolicy",
@@ -137,7 +111,6 @@ export class SecretsStack extends Stack {
   }
 
   readonly argocdSecretsPolicy: iam.ManagedPolicy;
-  readonly jaegerSecretsPolicy: iam.ManagedPolicy;
   readonly telemetrySecretsPolicy: iam.ManagedPolicy;
   readonly appSecretsPolicy: iam.ManagedPolicy;
   readonly crossplaneSecretsPolicy: iam.ManagedPolicy;
