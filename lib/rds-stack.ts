@@ -30,9 +30,7 @@ export class RDSStack extends Stack {
           ec2.InstanceClass.BURSTABLE3,
           ec2.InstanceSize.MICRO
         ),
-      credentials: rds.Credentials.fromGeneratedSecret("postgres", {
-        excludeCharacters: " %+~`#$&*()|[]{}:;<>?!'/@^\\.,=",
-      }),
+      credentials: rds.Credentials.fromGeneratedSecret("postgres"),
       multiAz: false,
       allocatedStorage: 20,
       maxAllocatedStorage: 105,
