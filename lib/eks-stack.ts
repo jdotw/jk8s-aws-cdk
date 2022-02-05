@@ -10,8 +10,10 @@ import { ManagedPolicy } from "aws-cdk-lib/aws-iam";
 import { DNSStack } from "./dns-stack";
 import { VPCStack } from "./vpc-stack";
 import { OpenSearchStack } from "./opensearch-stack";
+import { ClusterConfig } from "../lib/config";
 
 export interface EKSStackProps extends StackProps {
+  config: ClusterConfig;
   name: string;
   vpc: VPCStack;
   rds: RDSStack;
@@ -21,7 +23,7 @@ export class EKSStack extends Stack {
   constructor(scope: Construct, id: string, props: EKSStackProps) {
     super(scope, id, props);
 
-    const { name, rds, vpc, opensearch } = props;
+    const { config, name, rds, vpc, opensearch } = props;
 
     // EKS Cluster
 
@@ -46,10 +48,12 @@ export class EKSStack extends Stack {
     });
 
     const nodeGroup = this.cluster.addNodegroupCapacity(`DefaultNodeGroup`, {
-      instanceTypes: [new ec2.InstanceType("t3.medium")],
-      minSize: 1,
-      desiredSize: 3,
-      maxSize: 5,
+      instanceTypes: config.eksInstanceTypes.map(
+        (t) => new ec2.InstanceType(t)
+      ),
+      minSize: config.eksMinNodeCount,
+      desiredSize: config.eksDesiredNodeCount,
+      maxSize: config.eksMaxNodeCount,
     });
 
     rds.db.connections.allowFrom(this.cluster, ec2.Port.tcp(5432));

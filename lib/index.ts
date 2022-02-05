@@ -31,6 +31,7 @@ export function deployCluster(
   const opensearch = new OpenSearchStack(cdkApp, "OpenSearchStack", { vpc });
 
   const cluster = new EKSStack(cdkApp, "EKSStack", {
+    config,
     name,
     vpc,
     rds,
