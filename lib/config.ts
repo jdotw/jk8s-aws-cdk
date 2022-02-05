@@ -7,13 +7,14 @@ export type ClusterConfig = {
   eksMaxNodeCount: number;
 };
 
-export function defaultConfig() {
+export function defaultConfig(customConfig?: ClusterConfig) {
   const config: ClusterConfig = {
     fqdn: "",
     eksInstanceTypes: ["t3.medium"],
     eksMinNodeCount: 1,
     eksDesiredNodeCount: 3,
     eksMaxNodeCount: 5,
+    ...customConfig,
   };
   return config;
 }
