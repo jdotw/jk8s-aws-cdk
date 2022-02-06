@@ -21,7 +21,8 @@ export function deployCluster(
   const secrets = new SecretsStack(cdkApp, "SecretsStack", {});
 
   const dns = new DNSStack(cdkApp, "DNSStack", {
-    fqdn: config.fqdn,
+    hostedFQDN: config.hostedFQDN,
+    rootFQDN: config.rootFQDN,
   });
 
   const rds = new RDSStack(cdkApp, "RDSStack", {
