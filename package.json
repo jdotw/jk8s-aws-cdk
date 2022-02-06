@@ -1,6 +1,6 @@
 {
   "name": "@jdotw/jk8s-aws-cdk",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "main": "build/lib/index.js",
   "types": "build/lib/index.d.ts",
   "files": [
