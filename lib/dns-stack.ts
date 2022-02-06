@@ -5,23 +5,29 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export interface DNSStackProps extends StackProps {
-  fqdn: string;
+  hostedFQDN: string;
+  rootFQDN: string;
 }
 export class DNSStack extends Stack {
   constructor(scope: Construct, id: string, props: DNSStackProps) {
     super(scope, id, props);
 
-    const { fqdn } = props;
+    const { hostedFQDN, rootFQDN } = props;
 
     // Zone
     this.zone = new route53.PublicHostedZone(this, "HostedZone", {
-      zoneName: fqdn,
+      zoneName: hostedFQDN,
     });
 
-    new cdk.CfnOutput(this, "FQDN", {
+    new cdk.CfnOutput(this, "HostedFQDN", {
       value: this.zone.zoneName,
-      description: "FQDN",
-      exportName: "FQDN",
+      description: "HostedFQDN",
+      exportName: "HostedFQDN",
+    });
+    new cdk.CfnOutput(this, "RootFQDN", {
+      value: rootFQDN,
+      description: "RootFQDN",
+      exportName: "RootFQDN",
     });
     new cdk.CfnOutput(this, "ZoneID", {
       value: this.zone.hostedZoneId,

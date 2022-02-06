@@ -1,5 +1,6 @@
 export type ClusterConfig = {
-  fqdn: string;
+  hostedFQDN: string;
+  rootFQDN: string;
 
   eksInstanceTypes: string[];
   eksMinNodeCount: number;
@@ -9,7 +10,8 @@ export type ClusterConfig = {
 
 export function defaultConfig(customConfig?: ClusterConfig) {
   const config: ClusterConfig = {
-    fqdn: "",
+    hostedFQDN: "",
+    rootFQDN: "",
     eksInstanceTypes: ["t3.medium"],
     eksMinNodeCount: 1,
     eksDesiredNodeCount: 3,
