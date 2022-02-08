@@ -5,34 +5,28 @@ import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export interface DNSStackProps extends StackProps {
-  hostedFQDN: string;
-  rootFQDN: string;
+  hostedZoneName: string;
 }
 export class DNSStack extends Stack {
   constructor(scope: Construct, id: string, props: DNSStackProps) {
     super(scope, id, props);
 
-    const { hostedFQDN, rootFQDN } = props;
+    const { hostedZoneName } = props;
 
     // Zone
     this.zone = new route53.PublicHostedZone(this, "HostedZone", {
-      zoneName: hostedFQDN,
+      zoneName: hostedZoneName,
     });
 
-    new cdk.CfnOutput(this, "HostedFQDN", {
+    new cdk.CfnOutput(this, "HostedZoneName", {
       value: this.zone.zoneName,
-      description: "HostedFQDN",
-      exportName: "HostedFQDN",
+      description: "HostedZoneName",
+      exportName: "HostedZoneName",
     });
-    new cdk.CfnOutput(this, "RootFQDN", {
-      value: rootFQDN,
-      description: "RootFQDN",
-      exportName: "RootFQDN",
-    });
-    new cdk.CfnOutput(this, "ZoneID", {
+    new cdk.CfnOutput(this, "HostedZoneID", {
       value: this.zone.hostedZoneId,
-      description: "ZoneID",
-      exportName: "ZoneID",
+      description: "HostedZoneID",
+      exportName: "HostedZoneID",
     });
 
     // Policy: In-cluster manipulation of zone
