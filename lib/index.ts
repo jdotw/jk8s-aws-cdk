@@ -1,5 +1,4 @@
-import { App, Stack, StackProps } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { App } from "aws-cdk-lib";
 import { DNSStack } from "./dns-stack";
 import { ECRStack } from "./ecr-stack";
 import { EKSStack } from "./eks-stack";
@@ -7,15 +6,23 @@ import { OpenSearchStack } from "./opensearch-stack";
 import { RDSStack } from "./rds-stack";
 import { SecretsStack } from "./secrets-stack";
 import { VPCStack } from "./vpc-stack";
-import * as cdk from "aws-cdk-lib";
 import { ClusterConfig } from "./config";
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export function deployCluster(
+export type Cluster = {
+  vpc: VPCStack;
+  secrets: SecretsStack;
+  dns: DNSStack;
+  rds: RDSStack;
+  opensearch: OpenSearchStack;
+  eks: EKSStack;
+  registry: ECRStack;
+};
+
+export const deployCluster = (
   cdkApp: App,
   name: string,
   config: ClusterConfig
-) {
+): Cluster => {
   const vpc = new VPCStack(cdkApp, "VPCStack", {});
 
   const secrets = new SecretsStack(cdkApp, "SecretsStack", {});
@@ -30,7 +37,7 @@ export function deployCluster(
 
   const opensearch = new OpenSearchStack(cdkApp, "OpenSearchStack", { vpc });
 
-  const cluster = new EKSStack(cdkApp, "EKSStack", {
+  const eks = new EKSStack(cdkApp, "EKSStack", {
     config,
     name,
     vpc,
@@ -39,4 +46,14 @@ export function deployCluster(
   });
 
   const registry = new ECRStack(cdkApp, "ECRStack", {});
-}
+
+  return {
+    vpc,
+    secrets,
+    dns,
+    rds,
+    opensearch,
+    eks,
+    registry,
+  };
+};
